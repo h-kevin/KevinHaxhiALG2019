@@ -9,7 +9,7 @@ struct node {
 
     string data;
     node *next;
-}
+};
 
 class SinglyLinkedList {
 
@@ -25,6 +25,21 @@ public:
         this->head = NULL;
         this->tail = NULL;
         this->counter = 0;
+    }
+
+    node* getHead() {
+
+        return this->head;
+    }
+
+    node* getTail() {
+
+        return this->tail;
+    }
+
+    int getNodesNumber() {
+
+        return this->counter;
     }
 
     void add(string w) {
@@ -97,11 +112,6 @@ public:
             return -1;
         else
             return c;
-    }
-
-    int getNodesNumber() {
-
-        return this->counter;
     }
 
     void print() {
