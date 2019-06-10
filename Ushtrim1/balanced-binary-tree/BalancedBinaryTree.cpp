@@ -1,8 +1,8 @@
-// Class to handle operations with the binary tree.
+// Class to handle operations with the balanced binary tree.
 
 #include <string>
 #include <iostream>
-#include <bits/stdc++.h>
+#include <bit/stdc++.h>
 
 using namespace std;
 
@@ -10,9 +10,10 @@ struct treeNode {
 
     string data;
     treeNode *left, *right;
+    int height;
 };
 
-class BinaryTree {
+class BalancedBinaryTree {
 
 private:
 
@@ -21,7 +22,7 @@ private:
 
 public:
 
-    BinaryTree() {
+    BalancedBinaryTree() {
 
         this->root = NULL;
         this->counter = 0;
@@ -37,6 +38,63 @@ public:
         return this->counter;
     }
 
+    treeNode* findMin(treeNode *r) {
+
+        while (r->left != NULL)
+            r = r->left;
+        
+        return r;
+    }
+
+    int getMax(int a, int b) {
+
+        return (a > b) ? a : b;
+    }
+
+    int getHeight(treeNode *n) {
+
+        if (n == NULL)
+            return 0;
+        
+        return n->height;
+    }
+
+    treeNode* rightRotate(treeNode *y) {
+
+        treeNode *x = y->left;
+        treeNode *T2 = x->right;
+
+        x->right = y;
+        y->left = T2;
+
+        y->height = getMax(getHeight(y->left), getHeight(y->right)) + 1;
+        x->height = getMax(getHeight(x->left), getHeight(x->right)) + 1;
+
+        return x;
+    }
+
+    treeNode* leftRotate(treeNode *x) {
+
+        treeNode *y = x->right;
+        treeNode *T2 = y->left;
+
+        y->left = x;
+        x->right = T2;
+
+        x->height = getMax(getHeight(x->left), getHeight(x->right)) + 1;
+        y->height = getMax(getHeight(y->left), getHeight(y->right)) + 1;
+
+        return y;
+    }
+
+    int getBalance (treeNode *n) {
+
+        if (n == NULL)
+            return 0;
+
+        return getHeight(n->left) - getHeight(n->right);
+    }
+
     void add(treeNode* r = this->root, string w) {
 
         transform(w.begin(), w.end(), w.begin(), ::tolower);
@@ -46,8 +104,9 @@ public:
             treeNode *tmp = new treeNode;
             tmp->data = w;
             tmp->left = tmp->right = NULL;
-            this->counter++;
+            tmp->height = 1;
             r = tmp;
+            this->counter++;
         } else if (w.compare(r->data) < 0) {
 
             add(r->left, w);
@@ -55,14 +114,40 @@ public:
 
             add(r->right, w);
         }
-    }
 
-    treeNode* findMin(treeNode *r) {
+        r->height = 1 + getMax(getHeight(r->left), getHeight(r->right));
 
-        while (r->left != NULL)
-            r = r->left;
+        int balance = getBalance(r);
+
+        // Left Left Case
+        if (balance > 1 && w.compare(r->left->data) < 0) {
+
+            r = rightRotate(r);
+            return;
+        }
         
-        return r;
+        // Right Right Case
+        if (balance < -1 && w.compare(r->right->data) > 0) {
+
+            r = leftRotate(r);
+            return;
+        }
+
+        // Left Right Case
+        if (balance > 1 && w.compare(r->left->data) > 0) {
+
+            r->left = leftRotate(r->left);
+            r = rightRotate(r);
+            return;
+        }
+
+        // Right Left Case
+        if (balance < -1 && w.compare(r->right->data) < 0) {
+
+            r->right = rightRotate(r->right);
+            r = leftRotate(r);
+            return;
+        }
     }
 
     treeNode* Delete(treeNode *r = this->root, string w) {
@@ -154,4 +239,4 @@ public:
 
         print(r->right);
     }
-} // end class BinaryTree
+} // end class BalancedBinaryTree
