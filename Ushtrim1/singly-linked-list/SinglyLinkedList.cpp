@@ -60,11 +60,10 @@ public:
         }
     }
 
-    string remove(string w) {
+    void remove(string w) {
 
         node *tmp = this->head;
         node *p;
-        string d;
 
         while (tmp != NULL) {
 
@@ -72,46 +71,38 @@ public:
                 
                 if (tmp == this->head) {
 
-                    d = tmp->data;
                     this->head = this->head->next;
-                    tmp = NULL;
+                    delete tmp;
                     this->counter--;
-                    return d;
                 } else {
 
-                    d = tmp->data;
                     p->next = tmp->next;
-                    tmp = NULL;
+                    delete tmp;
                     this->counter--;
-                    return d;
                 }
             }
 
             p = tmp;
             tmp = tmp->next;
         }
-
-        return NULL;
     }
 
-    int find(string w) {
+    bool find(string w) {
 
         if (this->head == NULL)
-            return -1;
+            return false;
         
         node *tmp = this->head;
-        int c = 1;
 
         while (tmp != NULL && tmp->data != w) {
 
             tmp = tmp->next;
-            c++;
         }
 
         if (tmp == NULL)
-            return -1;
+            return false;
         else
-            return c;
+            return true;
     }
 
     void print() {
