@@ -26,7 +26,7 @@ public:
 
     void remove();
 
-    void find(string w);
+    bool find(string w);
 
     void print();
 } // end header class HashTable

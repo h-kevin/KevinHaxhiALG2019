@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <bit/stdc++.h>
 
 #include "SinglyLinkedList.h"
 
@@ -30,6 +31,8 @@ int SinglyLinkedList :: getNodesNumber() {
 }
 
 void SinglyLinkedList :: add(string w) {
+
+    transform(w.begin(), w.end(), w.begin(), ::tolower);
 
     node *tmp = new node;
     tmp->data = w;
