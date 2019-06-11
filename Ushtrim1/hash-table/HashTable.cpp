@@ -18,7 +18,7 @@ HashTable :: HashTable() {
     this->counter = 0;
 }
 
-int HashTable :: getNodesNum() {
+int HashTable :: getNodesNumber() {
 
     return this->counter;
 }

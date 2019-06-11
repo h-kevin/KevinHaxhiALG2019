@@ -27,7 +27,7 @@ public:
 
     HashTable();
 
-    int getNodesNum();
+    int getNodesNumber();
 
     int getStringSum(string w);
 
