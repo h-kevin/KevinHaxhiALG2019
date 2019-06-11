@@ -16,7 +16,7 @@ BinaryTree :: BinaryTree() {
 
 treeNode* BinaryTree :: getRoot() {
 
-    return this->root;
+    return  this->root;
 }
 
 int BinaryTree :: getNodesNumber() {
@@ -24,7 +24,7 @@ int BinaryTree :: getNodesNumber() {
     return this->counter;
 }
 
-void BinaryTree :: add(treeNode* r = this->root, string w) {
+void BinaryTree :: add(string w, treeNode *r) {
 
     transform(w.begin(), w.end(), w.begin(), ::tolower);
 
@@ -37,10 +37,10 @@ void BinaryTree :: add(treeNode* r = this->root, string w) {
         r = tmp;
     } else if (w.compare(r->data) < 0) {
 
-        add(r->left, w);
+        add(w, r->left);
     } else if (w.compare(r->data) > 0) {
 
-        add(r->right, w);
+        add(w, r->right);
     }
 }
 
@@ -52,17 +52,17 @@ treeNode* BinaryTree :: findMin(treeNode *r) {
     return r;
 }
 
-treeNode* BinaryTree :: Delete(treeNode *r = this->root, string w) {
+treeNode* BinaryTree :: Delete(string w, treeNode *r) {
 
     if (r == NULL)
         
         return NULL; // no elements
     else if (w.compare(r->data) < 0)
         
-        r->left = Delete(r->left, w); // searching recursively on the left
+        r->left = Delete(w, r->left); // searching recursively on the left
     else if (w.compare(r->data) > 0)
             
-        r->right = Delete(r->right, w); // searching recursively on the right
+        r->right = Delete(w, r->right); // searching recursively on the right
     else { // treeNode to remove was found
 
         // Case 1: our treeNode has no child
@@ -92,7 +92,7 @@ treeNode* BinaryTree :: Delete(treeNode *r = this->root, string w) {
 
             treeNode *tmp = findMin(r->right); // left tree < r < tmp < right tree
             r->data = tmp->data; // r data is reinitialized with tmp's data
-            r->right = Delete(r->right, tmp->data); // removing the original treeNode that became r
+            r->right = Delete(tmp->data, r->right); // removing the original treeNode that became r
             this->counter--;
         }
     }
@@ -122,7 +122,7 @@ bool BinaryTree :: find(string w) {
     return false;
 }
 
-void BinaryTree :: print(treeNode *r = this->root, int c = 1) {
+void BinaryTree :: print(int c, treeNode *r) {
 
     if (r == NULL) {
 
@@ -130,14 +130,15 @@ void BinaryTree :: print(treeNode *r = this->root, int c = 1) {
         return;
     }
 
-    print(r->left);
+    print(c, r->left);
     
     cout << r->data;
+    c++;
     
     if (c % 5 == 0)
         cout << endl;
     else
         cout << " , ";
 
-    print(r->right);
+    print(c, r->right);
 }

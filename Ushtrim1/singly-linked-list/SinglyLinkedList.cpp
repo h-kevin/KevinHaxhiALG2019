@@ -2,7 +2,7 @@
 
 #include <string>
 #include <iostream>
-#include <bit/stdc++.h>
+#include <bits/stdc++.h>
 
 #include "SinglyLinkedList.h"
 
@@ -36,7 +36,7 @@ void SinglyLinkedList :: add(string w) {
 
     node *tmp = new node;
     tmp->data = w;
-    tmp->next = w;
+    tmp->next = head;
     this->counter++;
 
     if (this->head == NULL && this->tail == NULL) {

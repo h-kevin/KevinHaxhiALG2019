@@ -1,16 +1,25 @@
 // Header class to handle operations with the binary tree.
 
+#ifndef BINARYTREE_H
+#define BINARYTREE_H
+
+#include <string>
+
+using namespace std;
+
+class treeNode {
+
+public:
+     
+    string data;
+    treeNode *left, *right;
+};
+
 class BinaryTree {
 
 private:
 
-    struct treeNode {
-
-        string data;
-        treeNode *left, *right;
-    };
-
-    treeNode *root;
+    static treeNode *root;
     int counter;
 
 public:
@@ -21,15 +30,16 @@ public:
 
     int getNodesNumber();
 
-    void add(treeNode* r = this->root, string w);
+    void add(string w, treeNode *r = root);
 
     treeNode* findMin(treeNode *r);
 
-    treeNode* Delete(treeNode *r = this->root, string w);
+    treeNode* Delete(string w, treeNode *r = root);
 
     void remove(string w);
 
     bool find(string w);
 
-    void print(treeNode *r = this->root, int c = 1);
-} // end header class BinaryTree
+    void print(int c = 1, treeNode *r = root);
+}; // end header class BinaryTree
+#endif

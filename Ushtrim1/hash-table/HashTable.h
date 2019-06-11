@@ -1,15 +1,24 @@
 // Header class to handle operations with the HashTable.
 
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
+
+#include <string>
+
+using namespace std;
+
+class node {
+
+public:
+
+    string data;
+    int key;
+    node *next;
+};
+
 class HashTable {
 
 private:
-
-    struct *node {
-
-        string data;
-        int key;
-        node *next;
-    }
 
     node *hTable[2019];
     int counter;
@@ -24,9 +33,10 @@ public:
 
     void add(string w);
 
-    void remove();
+    void remove(string w);
 
     bool find(string w);
 
     void print();
-} // end header class HashTable
+}; // end header class HashTable
+#endif

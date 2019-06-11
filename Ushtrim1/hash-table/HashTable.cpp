@@ -2,7 +2,7 @@
 
 #include <string>
 #include <iostream>
-#include <bit/stdc++.h>
+#include <bits/stdc++.h>
 
 #include "HashTable.h"
 

@@ -1,14 +1,23 @@
 // Header class to handle singly linked list operations.
 
+#ifndef SINGLYLINKEDLIST_H
+#define SINGLYLINKEDLIST_H
+
+#include <string>
+
+using namespace std;
+
+class node {
+
+public:
+
+    string data;
+    node *next;
+};
+
 class SinglyLinkedList {
 
 private:
-
-    struct node {
-
-        string data;
-        node *next;
-    };
 
     node *head, *tail;
     int counter;
@@ -24,9 +33,10 @@ public:
 
     void add(string w);
 
-    void remove();
+    void remove(string w);
 
     bool find(string w);
 
     void print();
-} // end header class SinglyLinkedList
+}; // end header class SinglyLinkedList
+#endif
