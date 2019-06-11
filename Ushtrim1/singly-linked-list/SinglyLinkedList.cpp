@@ -4,116 +4,132 @@
 #include <iostream>
 #include <bits/stdc++.h>
 
-#include "SinglyLinkedList.h"
-
 using namespace std;
 
-SinglyLinkedList :: SinglyLinkedList() {
+class node {
 
-    this->head = NULL;
-    this->tail = NULL;
-    this->counter = 0;
-}
+public:
 
-node* SinglyLinkedList :: getHead() {
+    string data;
+    node *next;
+};
 
-    return this->head;
-}
+class SinglyLinkedList {
 
-node* SinglyLinkedList :: getTail() {
+private:
 
-    return this->tail;
-}
+    node *head, *tail;
+    int counter;
 
-int SinglyLinkedList :: getNodesNumber() {
+public:
 
-    return this->counter;
-}
-
-void SinglyLinkedList :: add(string w) {
-
-    transform(w.begin(), w.end(), w.begin(), ::tolower);
-
-    node *tmp = new node;
-    tmp->data = w;
-    tmp->next = head;
-    this->counter++;
-
-    if (this->head == NULL && this->tail == NULL) {
-
-        this->head = tmp;
-        this->tail = tmp;
-    } else {
-
-        tmp->next = this->head;
-        this->head = tmp;
+    SinglyLinkedList() {
+        
+        this->head = NULL;
+        this->tail = NULL;
+        this->counter = 0;
     }
-}
 
-void SinglyLinkedList :: remove(string w) {
+    node* getHead() {
 
-    node *tmp = this->head;
-    node *p;
+        return this->head;
+    }
 
-    while (tmp != NULL) {
+    node* getTail() {
 
-        if (tmp->data == w) {
-            
-            if (tmp == this->head) {
+        return this->tail;
+    }
 
-                this->head = this->head->next;
-                delete tmp;
-                this->counter--;
-            } else {
+    int getNodesNumber() {
 
-                p->next = tmp->next;
-                delete tmp;
-                this->counter--;
-            }
+        return this->counter;
+    }
+
+    void add(string w) {
+
+        transform(w.begin(), w.end(), w.begin(), ::tolower);
+
+        node *tmp = new node;
+        tmp->data = w;
+        tmp->next = head;
+        this->counter++;
+
+        if (this->head == NULL && this->tail == NULL) {
+
+            this->head = tmp;
+            this->tail = tmp;
+        } else {
+
+            tmp->next = this->head;
+            this->head = tmp;
         }
-
-        p = tmp;
-        tmp = tmp->next;
     }
-}
 
-bool SinglyLinkedList :: find(string w) {
+    void remove(string w) {
 
-    if (this->head == NULL)
+        node *tmp = this->head;
+        node *p;
+    
+        while (tmp != NULL) {
+    
+            if (tmp->data == w) {
+                
+                if (tmp == this->head) {
+    
+                    this->head = this->head->next;
+                    delete tmp;
+                    this->counter--;
+                } else {
+    
+                    p->next = tmp->next;
+                    delete tmp;
+                    this->counter--;
+                }
+            }
+    
+            p = tmp;
+            tmp = tmp->next;
+        }
+    }
+
+    bool find(string w) {
+
+        if (this->head == NULL)
         return false;
     
-    node *tmp = this->head;
+        node *tmp = this->head;
 
-    while (tmp != NULL && tmp->data != w) {
+        while (tmp != NULL && tmp->data != w) {
 
-        tmp = tmp->next;
+            tmp = tmp->next;
+        }
+
+        if (tmp == NULL)
+            return false;
+        else
+            return true;
     }
 
-    if (tmp == NULL)
-        return false;
-    else
-        return true;
-}
+    void print() {
 
-void SinglyLinkedList :: print() {
-
-    if (this->head == NULL);
+        if (this->head == NULL);
         cout << "NULL";
 
-    node *tmp = this->head;
-    int c = 1;
+        node *tmp = this->head;
+        int c = 1;
 
-    while (tmp != NULL) {
+        while (tmp != NULL) {
 
-        cout << tmp->data;
+            cout << tmp->data;
 
-        if (c % 5 == 0)
-            cout << endl << "-> ";
-        else
-            cout << " -> ";
+            if (c % 5 == 0)
+                cout << endl << "-> ";
+            else
+                cout << " -> ";
 
-        tmp = tmp->next;
+            tmp = tmp->next;
+        }
+
+        cout << "NULL";
     }
-
-    cout << "NULL";
-}
+}; // end class SinglyLinkedList

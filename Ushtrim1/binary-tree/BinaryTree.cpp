@@ -4,141 +4,157 @@
 #include <iostream>
 #include <bits/stdc++.h>
 
-#include "BinaryTree.h"
-
 using namespace std;
 
-BinaryTree :: BinaryTree() {
+class treeNode {
 
-    this->root = NULL;
-    this->counter = 0;
-}
+public:
+     
+    string data;
+    treeNode *left, *right;
+};
 
-treeNode* BinaryTree :: getRoot() {
+class BinaryTree {
 
-    return  this->root;
-}
+private:
 
-int BinaryTree :: getNodesNumber() {
+    static treeNode *root;
+    int counter;
 
-    return this->counter;
-}
+public:
 
-void BinaryTree :: add(string w, treeNode *r) {
+    BinaryTree() {
 
-    transform(w.begin(), w.end(), w.begin(), ::tolower);
-
-    if (r == NULL) {
-
-        treeNode *tmp = new treeNode;
-        tmp->data = w;
-        tmp->left = tmp->right = NULL;
-        this->counter++;
-        r = tmp;
-    } else if (w.compare(r->data) < 0) {
-
-        add(w, r->left);
-    } else if (w.compare(r->data) > 0) {
-
-        add(w, r->right);
+        this->root = NULL;
+        this->counter = 0;
     }
-}
 
-treeNode* BinaryTree :: findMin(treeNode *r) {
+    treeNode* getRoot() {
 
-    while (r->left != NULL)
+        return  this->root;
+    }
+
+    int getNodesNumber() {
+
+        return this->counter;
+    }
+
+    void add(string w, treeNode *r = root) {
+
+        transform(w.begin(), w.end(), w.begin(), ::tolower);
+
+        if (r == NULL) {
+
+            treeNode *tmp = new treeNode;
+            tmp->data = w;
+            tmp->left = tmp->right = NULL;
+            this->counter++;
+            r = tmp;
+        } else if (w.compare(r->data) < 0) {
+
+            add(w, r->left);
+        } else if (w.compare(r->data) > 0) {
+
+            add(w, r->right);
+        }
+    }
+
+    treeNode* findMin(treeNode *r) {
+
+        while (r->left != NULL)
         r = r->left;
-    
-    return r;
-}
+        
+        return r;
+    }
 
-treeNode* BinaryTree :: Delete(string w, treeNode *r) {
+    treeNode* Delete(string w, treeNode *r = root) {
 
-    if (r == NULL)
+        if (r == NULL)
         
         return NULL; // no elements
-    else if (w.compare(r->data) < 0)
-        
-        r->left = Delete(w, r->left); // searching recursively on the left
-    else if (w.compare(r->data) > 0)
+        else if (w.compare(r->data) < 0)
             
-        r->right = Delete(w, r->right); // searching recursively on the right
-    else { // treeNode to remove was found
+            r->left = Delete(w, r->left); // searching recursively on the left
+        else if (w.compare(r->data) > 0)
+                
+            r->right = Delete(w, r->right); // searching recursively on the right
+        else { // treeNode to remove was found
 
-        // Case 1: our treeNode has no child
-        if (r->left == NULL && r->right == NULL) {
+            // Case 1: our treeNode has no child
+            if (r->left == NULL && r->right == NULL) {
 
-            delete r;
-            r = NULL;
-            this->counter--;
+                delete r;
+                r = NULL;
+                this->counter--;
+            }
+            // Case 2: our treeNode has one child (left or right)
+            else if (r->left == NULL) {
+
+                treeNode *tmp = r;
+                r = r->right;
+                delete tmp;
+                this->counter--;
+            }
+            else if (r->right == NULL) {
+
+                treeNode *tmp = r;
+                r = r->left;
+                delete tmp;
+                this->counter--;
+            }
+            // Case 3: our treeNode has 2 children (left and right)
+            else {
+
+                treeNode *tmp = findMin(r->right); // left tree < r < tmp < right tree
+                r->data = tmp->data; // r data is reinitialized with tmp's data
+                r->right = Delete(tmp->data, r->right); // removing the original treeNode that became r
+                this->counter--;
+            }
         }
-        // Case 2: our treeNode has one child (left or right)
-        else if (r->left == NULL) {
 
-            treeNode *tmp = r;
-            r = r->right;
-            delete tmp;
-            this->counter--;
-        }
-        else if (r->right == NULL) {
-
-            treeNode *tmp = r;
-            r = r->left;
-            delete tmp;
-            this->counter--;
-        }
-        // Case 3: our treeNode has 2 children (left and right)
-        else {
-
-            treeNode *tmp = findMin(r->right); // left tree < r < tmp < right tree
-            r->data = tmp->data; // r data is reinitialized with tmp's data
-            r->right = Delete(tmp->data, r->right); // removing the original treeNode that became r
-            this->counter--;
-        }
+        return r;
     }
 
-    return r;
-}
+    void remove(string w) { // simplified removal with void function using the above algorythm
 
-void BinaryTree :: remove(string w) { // simplified removal with void function using the above algorythm
+        this->root = Delete(w);
+    }
 
-    this->root = Delete(w);
-}
+    bool find(string w) {
 
-bool BinaryTree :: find(string w) {
+        treeNode *current = this->root;
 
-    treeNode *current = this->root;
+        while (current != NULL) {
 
-    while (current != NULL) {
+            if (w.compare(current->data) < 0)
+                current = current->left;
+            else if (w.compare(current->data) > 0)
+                current = current->right;
+            else
+                return true;
+        }
 
-        if (w.compare(current->data) < 0)
-            current = current->left;
-        else if (w.compare(current->data) > 0)
-            current = current->right;
+        return false;
+    }
+
+    void print(int c = 1, treeNode *r = root) {
+
+        if (r == NULL) {
+
+            cout << "NULL";
+            return;
+        }
+    
+        print(c, r->left);
+        
+        cout << r->data;
+        c++;
+        
+        if (c % 5 == 0)
+            cout << endl;
         else
-            return true;
-    }
-
-    return false;
-}
-
-void BinaryTree :: print(int c, treeNode *r) {
-
-    if (r == NULL) {
-
-        cout << "NULL";
-        return;
-    }
-
-    print(c, r->left);
+            cout << " , ";
     
-    cout << r->data;
-    c++;
-    
-    if (c % 5 == 0)
-        cout << endl;
-    else
-        cout << " , ";
-
-    print(c, r->right);
-}
+        print(c, r->right);
+    }
+}; // end class BinaryTree

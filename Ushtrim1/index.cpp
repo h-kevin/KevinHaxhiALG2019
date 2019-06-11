@@ -3,13 +3,12 @@
 #include <string>
 #include <iostream>
 #include <time.h>
-#include <iostream>
 #include <fstream>
 
-#include "singly-linked-list/SinglyLinkedList.h"
-#include "binary-tree/BinaryTree.h"
-#include "balanced-binary-tree/BalancedBinaryTree.h"
-#include "hash-table/HashTable.h"
+#include "singly-linked-list/SinglyLinkedList.cpp"
+#include "binary-tree/BinaryTree.cpp"
+#include "balanced-binary-tree/BalancedBinaryTree.cpp"
+#include "hash-table/HashTable.cpp"
 
 using namespace std;
 
@@ -18,7 +17,7 @@ static int tTime = 0;
 static int btTime = 0;
 static int htTime = 0;
 
-void readAndStore(int c1, int c2, SinglyLinkedList l, BinaryTree t, BalancedBinaryTree bt, HashTable ht) {
+void readAndStore(int c1, int c2, SinglyLinkedList& l, BinaryTree& t, BalancedBinaryTree& bt, HashTable& ht) {
 
     fstream in;
 

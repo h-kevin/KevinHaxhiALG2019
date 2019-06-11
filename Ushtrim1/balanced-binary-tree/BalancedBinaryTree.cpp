@@ -4,225 +4,242 @@
 #include <iostream>
 #include <bits/stdc++.h>
 
-#include "BalancedBinaryTree.h"
-
 using namespace std;
 
-BalancedBinaryTree :: BalancedBinaryTree() {
+class treeNode1 {
 
-    this->root = NULL;
-    this->counter = 0;
-}
+public:
 
-treeNode* BalancedBinaryTree :: getRoot() {
+    string data;
+    treeNode1 *left, *right;
+    int height;
+};
 
-    return this->root;
-}
+class BalancedBinaryTree {
 
-int BalancedBinaryTree :: getNodesNumber() {
+private:
 
-    return this->counter;
-}
+    static treeNode1 *root;
+    int counter;
 
-treeNode* BalancedBinaryTree :: findMin(treeNode *r) {
+public:
 
-    while (r->left != NULL)
+    BalancedBinaryTree() {
+
+        this->root = NULL;
+        this->counter = 0;
+    }
+
+    treeNode1* getRoot() {
+
+        return this->root;
+    }
+
+    int getNodesNumber() {
+
+        return this->counter;
+    }
+
+    treeNode1* findMin(treeNode1 *r) {
+
+        while (r->left != NULL)
         r = r->left;
     
-    return r;
-}
+        return r;
+    }
 
-int BalancedBinaryTree :: getMax(int a, int b) {
+    int getMax(int a, int b) {
 
-    return (a > b) ? a : b;
-}
+        return (a > b) ? a : b;
+    }
 
-int BalancedBinaryTree :: getHeight(treeNode *n) {
+    int getHeight(treeNode1 *n) {
 
-    if (n == NULL)
+        if (n == NULL)
         return 0;
     
-    return n->height;
-}
+        return n->height;
+    }
 
-treeNode* BalancedBinaryTree :: rightRotate(treeNode *y) {
+    treeNode1* rightRotate(treeNode1 *y) {
 
-    treeNode *x = y->left;
-    treeNode *T2 = x->right;
+        treeNode1 *x = y->left;
+        treeNode1 *T2 = x->right;
 
-    x->right = y;
-    y->left = T2;
+        x->right = y;
+        y->left = T2;
 
-    y->height = getMax(getHeight(y->left), getHeight(y->right)) + 1;
-    x->height = getMax(getHeight(x->left), getHeight(x->right)) + 1;
+        y->height = getMax(getHeight(y->left), getHeight(y->right)) + 1;
+        x->height = getMax(getHeight(x->left), getHeight(x->right)) + 1;
 
-    return x;
-}
+        return x;
+    }
 
-treeNode* BalancedBinaryTree :: leftRotate(treeNode *x) {
+    treeNode1* leftRotate(treeNode1 *x) {
 
-    treeNode *y = x->right;
-    treeNode *T2 = y->left;
+        treeNode1 *y = x->right;
+        treeNode1 *T2 = y->left;
 
-    y->left = x;
-    x->right = T2;
+        y->left = x;
+        x->right = T2;
 
-    x->height = getMax(getHeight(x->left), getHeight(x->right)) + 1;
-    y->height = getMax(getHeight(y->left), getHeight(y->right)) + 1;
+        x->height = getMax(getHeight(x->left), getHeight(x->right)) + 1;
+        y->height = getMax(getHeight(y->left), getHeight(y->right)) + 1;
 
-    return y;
-}
+        return y;
+    }
 
-int BalancedBinaryTree :: getBalance (treeNode *n) {
+    int getBalance (treeNode1 *n) {
 
-    if (n == NULL)
+        if (n == NULL)
         return 0;
 
-    return getHeight(n->left) - getHeight(n->right);
-}
-
-void BalancedBinaryTree :: add(string w, treeNode* r) {
-
-    transform(w.begin(), w.end(), w.begin(), ::tolower);
-
-    if (r == NULL) {
-
-        treeNode *tmp = new treeNode;
-        tmp->data = w;
-        tmp->left = tmp->right = NULL;
-        tmp->height = 1;
-        r = tmp;
-        this->counter++;
-    } else if (w.compare(r->data) < 0) {
-
-        add(w, r->left);
-    } else if (w.compare(r->data) > 0) {
-
-        add(w, r->right);
+        return getHeight(n->left) - getHeight(n->right);
     }
 
-    r->height = 1 + getMax(getHeight(r->left), getHeight(r->right));
+    void add(string w, treeNode1* r = root) {
 
-    int balance = getBalance(r);
+        transform(w.begin(), w.end(), w.begin(), ::tolower);
 
-    // Left Left Case
-    if (balance > 1 && w.compare(r->left->data) < 0) {
+        if (r == NULL) {
 
-        r = rightRotate(r);
-        return;
+            treeNode1 *tmp = new treeNode1;
+            tmp->data = w;
+            tmp->left = tmp->right = NULL;
+            tmp->height = 1;
+            r = tmp;
+            this->counter++;
+        } else if (w.compare(r->data) < 0) {
+
+            add(w, r->left);
+        } else if (w.compare(r->data) > 0) {
+
+            add(w, r->right);
+        }
+
+        r->height = 1 + getMax(getHeight(r->left), getHeight(r->right));
+
+        int balance = getBalance(r);
+
+        // Left Left Case
+        if (balance > 1 && w.compare(r->left->data) < 0) {
+
+            r = rightRotate(r);
+            return;
+        }
+        
+        // Right Right Case
+        if (balance < -1 && w.compare(r->right->data) > 0) {
+
+            r = leftRotate(r);
+            return;
+        }
+
+        // Left Right Case
+        if (balance > 1 && w.compare(r->left->data) > 0) {
+
+            r->left = leftRotate(r->left);
+            r = rightRotate(r);
+            return;
+        }
+
+        // Right Left Case
+        if (balance < -1 && w.compare(r->right->data) < 0) {
+
+            r->right = rightRotate(r->right);
+            r = leftRotate(r);
+            return;
+        }
     }
-    
-    // Right Right Case
-    if (balance < -1 && w.compare(r->right->data) > 0) {
 
-        r = leftRotate(r);
-        return;
-    }
+    treeNode1* Delete(string w, treeNode1 *r = root) {
 
-    // Left Right Case
-    if (balance > 1 && w.compare(r->left->data) > 0) {
-
-        r->left = leftRotate(r->left);
-        r = rightRotate(r);
-        return;
-    }
-
-    // Right Left Case
-    if (balance < -1 && w.compare(r->right->data) < 0) {
-
-        r->right = rightRotate(r->right);
-        r = leftRotate(r);
-        return;
-    }
-}
-
-treeNode* BalancedBinaryTree :: Delete(string w, treeNode *r) {
-
-    if (r == NULL)
+        if (r == NULL)
         
         return NULL; // no elements
-    else if (w.compare(r->data) < 0)
-        
-        r->left = Delete(w, r->left); // searching recursively on the left
-    else if (w.compare(r->data) > 0)
+        else if (w.compare(r->data) < 0)
             
-        r->right = Delete(w, r->right); // searching recursively on the right
-    else { // treeNode to remove was found
+            r->left = Delete(w, r->left); // searching recursively on the left
+        else if (w.compare(r->data) > 0)
+                
+            r->right = Delete(w, r->right); // searching recursively on the right
+        else { // treeNode1 to remove was found
 
-        // Case 1: our treeNode has no child
-        if (r->left == NULL && r->right == NULL) {
+            // Case 1: our treeNode1 has no child
+            if (r->left == NULL && r->right == NULL) {
 
-            delete r;
-            r = NULL;
-            this->counter--;
+                delete r;
+                r = NULL;
+                this->counter--;
+            }
+            // Case 2: our treeNode1 has one child (left or right)
+            else if (r->left == NULL) {
+
+                treeNode1 *tmp = r;
+                r = r->right;
+                delete tmp;
+                this->counter--;
+            }
+            else if (r->right == NULL) {
+
+                treeNode1 *tmp = r;
+                r = r->left;
+                delete tmp;
+                this->counter--;
+            }
+            // Case 3: our treeNode1 has 2 children (left and right)
+            else {
+
+                treeNode1 *tmp = findMin(r->right); // left tree < r < tmp < right tree
+                r->data = tmp->data; // r data is reinitialized with tmp's data
+                r->right = Delete(tmp->data, r->right); // removing the original treeNode1 that became r
+                this->counter--;
+            }
         }
-        // Case 2: our treeNode has one child (left or right)
-        else if (r->left == NULL) {
 
-            treeNode *tmp = r;
-            r = r->right;
-            delete tmp;
-            this->counter--;
-        }
-        else if (r->right == NULL) {
-
-            treeNode *tmp = r;
-            r = r->left;
-            delete tmp;
-            this->counter--;
-        }
-        // Case 3: our treeNode has 2 children (left and right)
-        else {
-
-            treeNode *tmp = findMin(r->right); // left tree < r < tmp < right tree
-            r->data = tmp->data; // r data is reinitialized with tmp's data
-            r->right = Delete(tmp->data, r->right); // removing the original treeNode that became r
-            this->counter--;
-        }
+        return r;
     }
 
-    return r;
-}
+    void remove(string w) { // simplified removal with void function using the above algorythm
 
-void BalancedBinaryTree :: remove(string w) { // simplified removal with void function using the above algorythm
+        this->root = Delete(w);
+    }
 
-    this->root = Delete(w);
-}
+    bool find(string w) {
 
-bool BalancedBinaryTree :: find(string w) {
+        treeNode1 *current = this->root;
+    
+        while (current != NULL) {
+    
+            if (w.compare(current->data) < 0)
+                current = current->left;
+            else if (w.compare(current->data) > 0)
+                current = current->right;
+            else
+                return true;
+        }
+    
+        return false;
+    }
 
-    treeNode *current = this->root;
+    void print(int c = 1, treeNode1 *r = root) {
 
-    while (current != NULL) {
-
-        if (w.compare(current->data) < 0)
-            current = current->left;
-        else if (w.compare(current->data) > 0)
-            current = current->right;
+        if (r == NULL) {
+    
+            cout << "NULL";
+            return;
+        }
+    
+        print(c, r->left);
+        c++;
+        
+        cout << r->data;
+        
+        if (c % 5 == 0)
+            cout << endl;
         else
-            return true;
-    }
-
-    return false;
-}
-
-void BalancedBinaryTree :: print(int c, treeNode *r) {
-
-    if (r == NULL) {
-
-        cout << "NULL";
-        return;
-    }
-
-    print(c, r->left);
-    c++;
+            cout << " , ";
     
-    cout << r->data;
-    
-    if (c % 5 == 0)
-        cout << endl;
-    else
-        cout << " , ";
-
-    print(c, r->right);
-}
+        print(c, r->right);
+    }
+}; // end class BalancedBinaryTree

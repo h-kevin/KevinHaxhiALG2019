@@ -4,104 +4,121 @@
 #include <iostream>
 #include <bits/stdc++.h>
 
-#include "HashTable.h"
-
 using namespace std;
 
-HashTable :: HashTable() {
+class node1 {
 
-    for (int i = 0; i < 2019; i++) {
+public:
 
-        this->hTable[i] = NULL;
+    string data;
+    int key;
+    node1 *next;
+};
+
+class HashTable {
+
+private:
+
+    node1 *hTable[2019];
+    int counter;
+
+public:
+
+    HashTable() {
+
+        for (int i = 0; i < 2019; i++) {
+
+            this->hTable[i] = NULL;
+        }
+    
+        this->counter = 0;
     }
 
-    this->counter = 0;
-}
-
-int HashTable :: getNodesNumber() {
-
-    return this->counter;
-}
-
-int HashTable :: getStringSum(string w) {
-
-    int s = 0;
-
-    for (int i = 0; i < w.length(); i++) {
-
-        s += (int) w.at(i);
+    int getNodesNumber() {
+        
+        return this->counter;
     }
 
-    return s;
-}
+    int getStringSum(string w) {
 
-void HashTable :: add(string w) {
+        int s = 0;
 
-    transform(w.begin(), w.end(), w.begin(), ::tolower);
+        for (int i = 0; i < w.length(); i++) {
 
-    node *tmp = new node;
-    tmp->data = w;
-    tmp->key = getStringSum(w);
-    tmp->next = NULL;
-    this->counter++;
-
-    if (this->hTable[tmp->key % 2019] == NULL) {
-
-        this->hTable[tmp->key % 2019] = tmp;
-    } else {
-
-        tmp->next = this->hTable[tmp->key % 2019];
-        this->hTable[tmp->key % 2019] = tmp;
-    }
-}
-
-void HashTable :: remove(string w) {
-
-    int key = getStringSum(w);
-    node *tmp = this->hTable[key % 2019];
-
-    while (tmp != NULL && tmp->data != w) {
-
-        tmp = tmp->next;
-    }
-
-    if (tmp == NULL)
-        return;
-    else {
-
-        node *toDelete = tmp;
-        tmp = tmp->next;
-        delete(tmp);
-    }
-}
-
-bool HashTable :: find(string w) {
-
-    int key = getStringSum(w);
-    node *tmp = this->hTable[key % 2019];
-
-    while (tmp != NULL && tmp->data != w) {
-
-        tmp = tmp->next;
-    }
-
-    if (tmp == NULL)
-        return false;
-    else
-        return true;
-}
-
-void HashTable :: print() {
-
-    for (int i = 0; i < 2019; i++) {
-
-        node *tmp = this->hTable[i];
-
-        while (tmp != NULL) {
-
-            cout << tmp->key << " " << tmp->data << endl;
+            s += (int) w.at(i);
         }
 
-        cout << endl;
+        return s;
     }
-}
+
+    void add(string w) {
+
+        transform(w.begin(), w.end(), w.begin(), ::tolower);
+
+        node1 *tmp = new node1;
+        tmp->data = w;
+        tmp->key = getStringSum(w);
+        tmp->next = NULL;
+        this->counter++;
+
+        if (this->hTable[tmp->key % 2019] == NULL) {
+
+            this->hTable[tmp->key % 2019] = tmp;
+        } else {
+
+            tmp->next = this->hTable[tmp->key % 2019];
+            this->hTable[tmp->key % 2019] = tmp;
+        }
+    }
+
+    void remove(string w) {
+
+        int key = getStringSum(w);
+        node1 *tmp = this->hTable[key % 2019];
+
+        while (tmp != NULL && tmp->data != w) {
+
+            tmp = tmp->next;
+        }
+
+        if (tmp == NULL)
+            return;
+        else {
+
+            node1 *toDelete = tmp;
+            tmp = tmp->next;
+            delete(tmp);
+        }
+    }
+
+    bool find(string w) {
+
+        int key = getStringSum(w);
+        node1 *tmp = this->hTable[key % 2019];
+
+        while (tmp != NULL && tmp->data != w) {
+
+            tmp = tmp->next;
+        }
+
+        if (tmp == NULL)
+            return false;
+        else
+            return true;
+    }
+
+    void print() {
+
+        for (int i = 0; i < 2019; i++) {
+
+            node1 *tmp = this->hTable[i];
+    
+            while (tmp != NULL) {
+    
+                cout << tmp->key << " " << tmp->data << endl;
+            }
+    
+            cout << endl;
+        }
+    }
+}; // end class HashTable
