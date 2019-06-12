@@ -75,9 +75,11 @@ public:
 
         int key = getStringSum(w);
         node1 *tmp = this->hTable[key % 2019];
+        node1 *p;
 
         while (tmp != NULL && tmp->data != w) {
 
+            p = tmp;
             tmp = tmp->next;
         }
 
@@ -85,9 +87,27 @@ public:
             return;
         else {
 
-            node1 *toDelete = tmp;
-            tmp = tmp->next;
-            delete(tmp);
+            node1 *nextEntry = tmp->next;
+            if (p != NULL) {
+
+                p->next = nextEntry;
+                tmp = NULL;
+                this->counter--;
+            }
+            else {
+
+                if (nextEntry == NULL) {
+
+                    this->hTable[key % 2019] = NULL;
+                    tmp = NULL;
+                    this->counter--;
+                } else {
+
+                    this->hTable[key % 2019] = nextEntry;
+                    tmp = NULL;
+                    this->counter--;
+                }
+            }
         }
     }
 
@@ -112,13 +132,18 @@ public:
         for (int i = 0; i < 2019; i++) {
 
             node1 *tmp = this->hTable[i];
+
+            if (tmp != NULL)
+                cout << endl;
     
             while (tmp != NULL) {
     
-                cout << tmp->key << " " << tmp->data << endl;
+                cout << tmp->key << " " << tmp->data;
+                if (tmp->next != NULL)
+                    cout << " | ";
+
+                tmp = tmp->next;
             }
-    
-            cout << endl;
         }
     }
 }; // end class HashTable
