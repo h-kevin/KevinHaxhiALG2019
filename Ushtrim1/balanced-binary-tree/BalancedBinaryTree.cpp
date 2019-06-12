@@ -19,7 +19,7 @@ class BalancedBinaryTree {
 
 private:
 
-    static treeNode1 *root;
+    treeNode1 *root;
     int counter;
 
 public:
@@ -97,7 +97,7 @@ public:
         return getHeight(n->left) - getHeight(n->right);
     }
 
-    void add(string w, treeNode1* r = root) {
+    treeNode1* Insert(string w, treeNode1* r) {
 
         transform(w.begin(), w.end(), w.begin(), ::tolower);
 
@@ -107,14 +107,14 @@ public:
             tmp->data = w;
             tmp->left = tmp->right = NULL;
             tmp->height = 1;
-            r = tmp;
             this->counter++;
+            return tmp;
         } else if (w.compare(r->data) < 0) {
 
-            add(w, r->left);
+            return Insert(w, r->left);
         } else if (w.compare(r->data) > 0) {
 
-            add(w, r->right);
+            return Insert(w, r->right);
         }
 
         r->height = 1 + getMax(getHeight(r->left), getHeight(r->right));
@@ -124,35 +124,37 @@ public:
         // Left Left Case
         if (balance > 1 && w.compare(r->left->data) < 0) {
 
-            r = rightRotate(r);
-            return;
+            return rightRotate(r);
         }
         
         // Right Right Case
         if (balance < -1 && w.compare(r->right->data) > 0) {
 
-            r = leftRotate(r);
-            return;
+            return leftRotate(r);
         }
 
         // Left Right Case
         if (balance > 1 && w.compare(r->left->data) > 0) {
 
             r->left = leftRotate(r->left);
-            r = rightRotate(r);
-            return;
+            return rightRotate(r);
         }
 
         // Right Left Case
         if (balance < -1 && w.compare(r->right->data) < 0) {
 
             r->right = rightRotate(r->right);
-            r = leftRotate(r);
-            return;
+            return leftRotate(r);
         }
+        return r;
     }
 
-    treeNode1* Delete(string w, treeNode1 *r = root) {
+    void add(string w) {
+
+        this->root = Insert(w, this->root);
+    }
+
+    treeNode1* Delete(string w, treeNode1 *r) {
 
         if (r == NULL)
         
@@ -202,7 +204,7 @@ public:
 
     void remove(string w) { // simplified removal with void function using the above algorythm
 
-        this->root = Delete(w);
+        this->root = Delete(w, this->root);
     }
 
     bool find(string w) {
@@ -222,7 +224,7 @@ public:
         return false;
     }
 
-    void print(int c = 1, treeNode1 *r = root) {
+    void print(treeNode1 *r, int c = 1) {
 
         if (r == NULL) {
     
@@ -230,7 +232,7 @@ public:
             return;
         }
     
-        print(c, r->left);
+        print(r->left, c);
         c++;
         
         cout << r->data;
@@ -240,6 +242,6 @@ public:
         else
             cout << " , ";
     
-        print(c, r->right);
+        print(r->right, c);
     }
 }; // end class BalancedBinaryTree

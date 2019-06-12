@@ -19,7 +19,7 @@ static int htTime = 0;
 
 void readAndStore(int c1, int c2, SinglyLinkedList& l, BinaryTree& t, BalancedBinaryTree& bt, HashTable& ht) {
 
-    fstream in;
+    ifstream in;
 
     in.open("data/file.txt");
 
@@ -100,9 +100,9 @@ void readAndStore(int c1, int c2, SinglyLinkedList& l, BinaryTree& t, BalancedBi
 
 int main() {
 
-    int ch1 = 1;
-    int ch2 = 1;
-    int ch3 = 1;
+    int ch1 = 0;
+    int ch2 = 0;
+    int ch3 = 0;
 
     SinglyLinkedList list;
     BinaryTree tree;
@@ -124,6 +124,12 @@ int main() {
         cin >> ch1;
     }
 
+    if (ch1 == 5) {
+
+        cout << endl << endl;
+        exit(EXIT_SUCCESS);
+    }
+
     if (system("CLS")) system("clear");
 
     cout << "Choose the number of words to initiate the algorythm:" << endl << endl;
@@ -139,7 +145,15 @@ int main() {
         cin >> ch2;
     }
 
-    if (ch2 == 5)
+    if (ch2 == 1)
+        ch2 = 100;
+    else if (ch2 == 2)
+        ch2 = 1000;
+    else if (ch2 == 3)
+        ch2 = 100000;
+    else if (ch2 == 4)
+        ch2 = 1000000;
+    else
         exit(EXIT_SUCCESS);
 
     switch (ch1)
@@ -151,7 +165,7 @@ int main() {
             cout << endl << endl << "Process took " << lTime << " seconds execution time.";
             cout << endl << list.getNodesNumber() << " words were added.";
             cout << endl << "Press enter to continue ...";
-            getchar();
+            getchar();getchar();
             break;
 
         case 2:
@@ -161,7 +175,7 @@ int main() {
             cout << endl << endl << "Process took " << tTime << " seconds execution time.";
             cout << endl << tree.getNodesNumber() << " words were added.";
             cout << endl << "Press enter to continue ...";
-            getchar();
+            getchar();getchar();
             break;
 
         case 3:
@@ -171,7 +185,7 @@ int main() {
             cout << endl << endl << "Process took " << btTime << " seconds execution time.";
             cout << endl << balancedTree.getNodesNumber() << " words were added.";
             cout << endl << "Press enter to continue ...";
-            getchar();
+            getchar();getchar();
             break;
 
         case 4:
@@ -181,12 +195,8 @@ int main() {
             cout << endl << endl << "Process took " << htTime << " seconds execution time.";
             cout << endl << hTable.getNodesNumber() << " words were added.";
             cout << endl << "Press enter to continue ...";
-            getchar();
+            getchar();getchar();
             break;
-        
-        case 5:
-            cout << endl << endl;
-            exit(EXIT_SUCCESS);
     }
 
 repeatAction:
@@ -242,7 +252,8 @@ repeatAction:
                 cout << "Added, " << htTime << " seconds.";
             }
             cout << endl << "Press enter to continue ...";
-            getchar();
+            ch3 = 0;
+            getchar();getchar();
             goto repeatAction;
         
         case 2:
@@ -275,7 +286,8 @@ repeatAction:
                 cout << "Removed, " << htTime << " seconds.";
             }
             cout << endl << "Press enter to continue ...";
-            getchar();
+            ch3 = 0;
+            getchar();getchar();
             goto repeatAction;;
 
         case 3:
@@ -320,7 +332,8 @@ repeatAction:
                     cout << "Not found, " << htTime << " seconds.";
             }
             cout << endl << "Press enter to continue ...";
-            getchar();
+            ch3 = 0;
+            getchar();getchar();
             goto repeatAction;
 
         case 4:
@@ -335,13 +348,13 @@ repeatAction:
             } else if (tree.getNodesNumber() != 0) {
 
                 tTime = clock();
-                tree.print();
+                tree.print(tree.getRoot());
                 tTime = clock() - tTime;
                 cout << endl << endl << "Elements were printed in " << tTime << " seconds.";
             } else if (balancedTree.getNodesNumber() != 0) {
 
                 btTime = clock();
-                balancedTree.print();
+                balancedTree.print(balancedTree.getRoot());
                 btTime = clock() - btTime;
                 cout << endl << endl << "Elements were printed in " << btTime << " seconds.";
             } else {
@@ -352,7 +365,8 @@ repeatAction:
                 cout << endl << endl << "Elements were printed in " << htTime << " seconds.";
             }
             cout << endl << "Press enter to continue ...";
-            getchar();
+            ch3 = 0;
+            getchar();getchar();
             goto repeatAction;
 
         case 5:

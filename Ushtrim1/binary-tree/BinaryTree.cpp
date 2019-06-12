@@ -18,7 +18,7 @@ class BinaryTree {
 
 private:
 
-    static treeNode *root;
+    treeNode *root;
     int counter;
 
 public:
@@ -39,7 +39,7 @@ public:
         return this->counter;
     }
 
-    void add(string w, treeNode *r = root) {
+    treeNode* Insert(string w, treeNode *r) {
 
         transform(w.begin(), w.end(), w.begin(), ::tolower);
 
@@ -49,14 +49,19 @@ public:
             tmp->data = w;
             tmp->left = tmp->right = NULL;
             this->counter++;
-            r = tmp;
+            return tmp;
         } else if (w.compare(r->data) < 0) {
 
-            add(w, r->left);
+            return Insert(w, r->left);
         } else if (w.compare(r->data) > 0) {
 
-            add(w, r->right);
+            return Insert(w, r->right);
         }
+    }
+
+    void add(string w) {
+
+        this->root = Insert(w, this->root);
     }
 
     treeNode* findMin(treeNode *r) {
@@ -67,7 +72,7 @@ public:
         return r;
     }
 
-    treeNode* Delete(string w, treeNode *r = root) {
+    treeNode* Delete(string w, treeNode *r) {
 
         if (r == NULL)
         
@@ -117,7 +122,7 @@ public:
 
     void remove(string w) { // simplified removal with void function using the above algorythm
 
-        this->root = Delete(w);
+        this->root = Delete(w, this->root);
     }
 
     bool find(string w) {
@@ -137,7 +142,7 @@ public:
         return false;
     }
 
-    void print(int c = 1, treeNode *r = root) {
+    void print(treeNode *r, int c = 1) {
 
         if (r == NULL) {
 
@@ -145,7 +150,7 @@ public:
             return;
         }
     
-        print(c, r->left);
+        print(r->left, c);
         
         cout << r->data;
         c++;
@@ -155,6 +160,6 @@ public:
         else
             cout << " , ";
     
-        print(c, r->right);
+        print(r->right, c);
     }
 }; // end class BinaryTree

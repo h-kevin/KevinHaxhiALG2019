@@ -51,7 +51,7 @@ public:
 
         node *tmp = new node;
         tmp->data = w;
-        tmp->next = head;
+        tmp->next = NULL;
         this->counter++;
 
         if (this->head == NULL && this->tail == NULL) {
@@ -112,8 +112,11 @@ public:
 
     void print() {
 
-        if (this->head == NULL);
-        cout << "NULL";
+        if (this->head == NULL) {
+
+            cout << "NULL";
+            return;
+        }
 
         node *tmp = this->head;
         int c = 1;
@@ -128,6 +131,7 @@ public:
                 cout << " -> ";
 
             tmp = tmp->next;
+            c++;
         }
 
         cout << "NULL";
