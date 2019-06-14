@@ -348,13 +348,13 @@ repeatAction:
             } else if (tree.getNodesNumber() != 0) {
 
                 tTime = clock();
-                tree.print(tree.getRoot());
+                tree.print();
                 tTime = clock() - tTime;
                 cout << endl << endl << "Elements were printed in " << tTime << " seconds.";
             } else if (balancedTree.getNodesNumber() != 0) {
 
                 btTime = clock();
-                balancedTree.print(balancedTree.getRoot());
+                balancedTree.print();
                 btTime = clock() - btTime;
                 cout << endl << endl << "Elements were printed in " << btTime << " seconds.";
             } else {

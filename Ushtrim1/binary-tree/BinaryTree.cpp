@@ -12,6 +12,13 @@ public:
      
     string data;
     treeNode *left, *right;
+
+    treeNode(string w) {
+
+        this->data = w;
+        this->left = NULL;
+        this->right = NULL;
+    }
 };
 
 class BinaryTree {
@@ -20,6 +27,118 @@ private:
 
     treeNode *root;
     int counter;
+    int pCounter = 0;
+
+    void addHelper(treeNode *root, string w) {
+
+        if (w.compare(root->data) < 0) {
+
+            if (!root->left) {
+
+                root->left = new treeNode(w);
+                this->counter++;
+            } else {
+
+                addHelper(root->left, w);
+            }
+        } else if (w.compare(root->data) > 0) {
+
+            if (!root->right) {
+
+                root->right = new treeNode(w);
+                this->counter++;
+            } else {
+
+                addHelper(root->right, w);
+            }
+        }
+    }
+
+    treeNode* findMin(treeNode *root) {
+
+        while (root->left != NULL)
+        root = root->left;
+        
+        return root;
+    }
+
+    treeNode* removeHelper(treeNode *root, string w) {
+
+        if (root == NULL)
+            return NULL;
+
+        else if (w.compare(root->data) < 0)
+            root->left = removeHelper(root->left, w); // searching recursively on the left
+
+        else if (w.compare(root->data) > 0) 
+            root->right = removeHelper(root->right, w); // searching recursively on the right
+
+        else { // treeNode to remove was found
+
+            // Case 1: our treeNode has no child
+            if (root->left == NULL && root->right == NULL) {
+
+                delete root;
+                root = NULL;
+                this->counter--;
+            }
+            // Case 2: our treeNode has one child (left or right)
+            else if (root->left == NULL) {
+
+                treeNode *tmp = root;
+                root = root->right;
+                delete tmp;
+                this->counter--;
+            }
+            else if (root->right == NULL) {
+
+                treeNode *tmp = root;
+                root = root->left;
+                delete tmp;
+                this->counter--;
+            }
+            // Case 3: our treeNode has 2 children (left and right)
+            else {
+
+                treeNode *tmp = findMin(root->right); // left tree < r < tmp < right tree
+                root->data = tmp->data; // r data is reinitialized with tmp's data
+                root->right = removeHelper(root->right, tmp->data); // removing the original treeNode that became r
+                this->counter--;
+            }
+        }
+
+        return root;
+    }
+
+    bool findHelper(treeNode *root, string w) {
+
+        if (root == NULL)
+            return false;
+        else if (w == root->data)
+            return true;
+        else if (w.compare(root->data) < 0)
+            return findHelper(root->left, w);
+        else
+            return findHelper(root->right, w);
+    }
+
+    void printHelper(treeNode *root) {
+
+        if (!root)
+            return;
+        
+        printHelper(root->left);
+        
+        cout << root->data;
+        this->pCounter++;
+        
+        if (pCounter % 5 == 0)
+            cout << endl;
+        else
+            cout << " , ";
+
+        printHelper(root->right);
+    }
 
 public:
 
@@ -39,127 +158,46 @@ public:
         return this->counter;
     }
 
-    treeNode* Insert(string w, treeNode *r) {
-
-        transform(w.begin(), w.end(), w.begin(), ::tolower);
-
-        if (r == NULL) {
-
-            treeNode *tmp = new treeNode;
-            tmp->data = w;
-            tmp->left = tmp->right = NULL;
-            this->counter++;
-            return tmp;
-        } else if (w.compare(r->data) < 0) {
-
-            return Insert(w, r->left);
-        } else if (w.compare(r->data) > 0) {
-
-            return Insert(w, r->right);
-        }
-    }
-
     void add(string w) {
 
-        this->root = Insert(w, this->root);
-    }
-
-    treeNode* findMin(treeNode *r) {
-
-        while (r->left != NULL)
-        r = r->left;
+        transform(w.begin(), w.end(), w.begin(), ::tolower);
         
-        return r;
-    }
+        if (this->root) {
 
-    treeNode* Delete(string w, treeNode *r) {
+            this->addHelper(this->root, w);
+        } else {
 
-        if (r == NULL)
-        
-        return NULL; // no elements
-        else if (w.compare(r->data) < 0)
-            
-            r->left = Delete(w, r->left); // searching recursively on the left
-        else if (w.compare(r->data) > 0)
-                
-            r->right = Delete(w, r->right); // searching recursively on the right
-        else { // treeNode to remove was found
-
-            // Case 1: our treeNode has no child
-            if (r->left == NULL && r->right == NULL) {
-
-                delete r;
-                r = NULL;
-                this->counter--;
-            }
-            // Case 2: our treeNode has one child (left or right)
-            else if (r->left == NULL) {
-
-                treeNode *tmp = r;
-                r = r->right;
-                delete tmp;
-                this->counter--;
-            }
-            else if (r->right == NULL) {
-
-                treeNode *tmp = r;
-                r = r->left;
-                delete tmp;
-                this->counter--;
-            }
-            // Case 3: our treeNode has 2 children (left and right)
-            else {
-
-                treeNode *tmp = findMin(r->right); // left tree < r < tmp < right tree
-                r->data = tmp->data; // r data is reinitialized with tmp's data
-                r->right = Delete(tmp->data, r->right); // removing the original treeNode that became r
-                this->counter--;
-            }
+            this->root = new treeNode(w);
+            this->counter++;
         }
-
-        return r;
     }
 
-    void remove(string w) { // simplified removal with void function using the above algorythm
+    void remove(string w) {
 
-        this->root = Delete(w, this->root);
+        if (this->root) {
+
+            this->root = this->removeHelper(this->root, w);
+        }
     }
 
     bool find(string w) {
 
-        treeNode *current = this->root;
+        if (this->root) {
 
-        while (current != NULL) {
-
-            if (w.compare(current->data) < 0)
-                current = current->left;
-            else if (w.compare(current->data) > 0)
-                current = current->right;
-            else
-                return true;
+            return this->findHelper(this->root, w);
         }
-
-        return false;
     }
 
-    void print(treeNode *r, int c = 1) {
+    void print() {
 
-        if (r == NULL) {
+        if (this->root) {
+
+            pCounter = 0;
+            this->printHelper(this->root);
+            cout << "NULL";
+        } else {
 
             cout << "NULL";
-            return;
         }
-    
-        print(r->left, c);
-        
-        cout << r->data;
-        c++;
-        
-        if (c % 5 == 0)
-            cout << endl;
-        else
-            cout << " , ";
-    
-        print(r->right, c);
     }
 }; // end class BinaryTree
