@@ -63,20 +63,6 @@ private:
 
     treeNode1* rl_rotation(treeNode1 *parent) {
 
-        // treeNode1 *t;
-        // treeNode1 *tl;
-
-        // t = parent->right;
-        // tl = t->left;
-
-        // t->left = tl->right;
-        // tl->right = t;
-        // parent->right = tl;
-
-        // parent->right = tl->left;
-        // tl->left = parent;
-
-        // return tl;
         treeNode1 *t;
         t = parent->right;
         parent->right = ll_rotation(t);
@@ -85,20 +71,6 @@ private:
 
     treeNode1* lr_rotation(treeNode1 *parent) {
 
-        // treeNode1 *t;
-        // treeNode1 *tr;
-
-        // t = parent->left;
-        // tr = t->right;
-
-        // t->right = tr->left;
-        // tr->left = t;
-        // parent->left = tr;
-
-        // parent->left = tr->right;
-        // tr->right = parent;
-
-        // return tr;
         treeNode1 *t;
         t = parent->left;
         parent->left = rr_rotation(t);
@@ -301,6 +273,8 @@ public:
     }
 
     bool find(string w) {
+
+        transform(w.begin(), w.end(), w.begin(), ::tolower);
 
         if (this->root) {
 

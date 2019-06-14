@@ -94,6 +94,8 @@ public:
 
     bool find(string w) {
 
+        transform(w.begin(), w.end(), w.begin(), ::tolower);
+
         if (this->head == NULL)
         return false;
     

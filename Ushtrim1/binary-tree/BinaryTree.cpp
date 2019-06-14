@@ -182,6 +182,8 @@ public:
 
     bool find(string w) {
 
+        transform(w.begin(), w.end(), w.begin(), ::tolower);
+
         if (this->root) {
 
             return this->findHelper(this->root, w);

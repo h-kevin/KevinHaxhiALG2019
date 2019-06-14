@@ -113,6 +113,8 @@ public:
 
     bool find(string w) {
 
+        transform(w.begin(), w.end(), w.begin(), ::tolower);
+
         int key = getStringSum(w);
         node1 *tmp = this->hTable[key % 2019];
 
