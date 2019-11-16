@@ -3,7 +3,7 @@
 ### Viti II
 ### Grupi B2
 
-#### Data Structures in C++ running in terminal
+###### Data Structures in C++ running in terminal
 ![1](https://i.imgur.com/Jsyzre0.png)
 
 ![2](https://i.imgur.com/iHxPTIf.png)
@@ -24,7 +24,7 @@
 
 ![10](https://i.imgur.com/tOtfUWV.png)
 
-#### Simple Web Crawler in "go" running in terminal
+###### Simple Web Crawler in "go" running in terminal
 
 ![1](https://i.imgur.com/7TWoHEO.png)
 
